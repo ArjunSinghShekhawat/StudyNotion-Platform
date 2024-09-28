@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Document
 @Data
@@ -39,5 +40,9 @@ public class User {
 
     @DBRef
     private Profile profile;
+
+    private String token;
+
+    private LocalTime resetPasswordExpire;
 
 }

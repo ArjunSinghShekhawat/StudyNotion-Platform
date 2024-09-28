@@ -36,7 +36,7 @@ public class WebSecurity {
             return httpSecurity.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(auth->
-                            auth.requestMatchers("/auth/**","/public/**").permitAll()
+                            auth.requestMatchers("/auth/**","/public/**","/reset-password/**").permitAll()
                                     .requestMatchers("/student/**").hasRole("STUDENT")
                                     .requestMatchers("/admin/**").hasRole("ADMIN")
                                     .requestMatchers("/instructor/**").hasRole("INSTRUCTOR")

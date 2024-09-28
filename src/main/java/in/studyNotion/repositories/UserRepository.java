@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends MongoRepository<User, ObjectId> {
 
     User findByEmail(String email);
+    User findByToken(String token);
 
 }
