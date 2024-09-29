@@ -80,6 +80,7 @@ public class Auth {
         newUser.setEmail(user.getEmail());
         newUser.setPhoneNumber(user.getPhoneNumber());
         newUser.setAccountTypes(user.getAccountTypes());
+        newUser.setImageUrl(String.format("https://api.dicebear.com/5.x/initials/svg?seed=$%s $%s",user.getFirstName(),user.getLastName()));
 
         //create profile
         Profile profile = new Profile();

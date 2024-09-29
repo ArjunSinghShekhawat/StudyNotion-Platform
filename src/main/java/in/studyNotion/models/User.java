@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Document
 @Data
@@ -47,4 +49,6 @@ public class User {
 
     private String imageUrl;
 
+    @DBRef
+    private Set<Course> courses = new LinkedHashSet<>();
 }

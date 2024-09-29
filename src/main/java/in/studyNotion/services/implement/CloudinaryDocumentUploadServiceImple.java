@@ -47,6 +47,7 @@ public class CloudinaryDocumentUploadServiceImple {
                 try {
                     String email = this.jwtUtils.getEmailFromToken(jwt);
                     User user = this.userRepository.findByEmail(email);
+
                     AccountTypes role = user.getAccountTypes();
 
                     // Folder selection based on account type
@@ -66,29 +67,11 @@ public class CloudinaryDocumentUploadServiceImple {
 
                     log.info("Folder path is {}", folder);
 
-                    // Fetch file name from the uploaded file
-                    log.info("Fetch the file name!");
-                    String originalFileName = file.getOriginalFilename();
-                    if (originalFileName != null && originalFileName.contains(".")) {
-                        originalFileName = originalFileName.substring(0, originalFileName.lastIndexOf('.'));
-                    }
-                    log.info("The file name is {}", originalFileName);
-
-                    // Set options
-                    log.info("Set options!");
-                    Map<String, Object> options = new HashMap<>();
-                    options.put("folder", folder);
-                    options.put("resource_type", "auto");
-                    options.put("public_id", originalFileName);
-
-                    // Upload document to cloudinary
-                    Map<String, Object> data = this.cloudinary.uploader().upload(file.getBytes(), options);
+                    Map data = documentUploader(file, folder);
 
                     // Save user with the image URL
                     user.setImageUrl((String) data.get("secure_url"));
                     this.userRepository.save(user);
-
-                    log.info("All options are {}", options);
 
                     // Send email
                     boolean emailSend = this.emailSenderService.sendMail(user.getEmail(), "Your Document Uploaded", "Document Upload Successful!");
@@ -111,5 +94,37 @@ public class CloudinaryDocumentUploadServiceImple {
         log.error("Error while fetching the result from Future: ", e);
     }
         return map;
+    }
+
+
+    public Map documentUploader(MultipartFile file,String folder) throws Exception {
+
+        try{
+            // Fetch file name from the uploaded file
+            log.info("Fetch the file name!");
+            String originalFileName = file.getOriginalFilename();
+            if (originalFileName != null && originalFileName.contains(".")) {
+                originalFileName = originalFileName.substring(0, originalFileName.lastIndexOf('.'));
+            }
+            log.info("The file name is {}", originalFileName);
+
+            // Set options
+            log.info("Set options!");
+            Map<String, Object> options = new HashMap<>();
+            options.put("folder", folder);
+            options.put("resource_type", "auto");
+            options.put("public_id", originalFileName);
+
+            log.info("All options are {}", options);
+
+
+            // Upload document to cloudinary
+            Map<String, Object> data = this.cloudinary.uploader().upload(file.getBytes(), options);
+
+            return data;
+        }catch (Exception e){
+            log.error("Error Occurred While Upload document in cloudinary {} ",e.getMessage());
+            throw new Exception("Cloudinary error");
+        }
     }
 }

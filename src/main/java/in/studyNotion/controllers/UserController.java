@@ -7,6 +7,7 @@ import in.studyNotion.request.UserRequest;
 import in.studyNotion.responce.UpdatedUserResponce;
 import in.studyNotion.services.ProfileService;
 import in.studyNotion.services.UserService;
+import in.studyNotion.services.implement.UserServiceImple;
 import in.studyNotion.utils.JwtUtils;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
 
     @PutMapping("/profile-update")
     public ResponseEntity<Boolean>updateProfile(@Valid @RequestBody ProfileDto profileDto,@RequestHeader("Authorization") String jwt){
