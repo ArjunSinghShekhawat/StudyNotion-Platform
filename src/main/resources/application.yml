@@ -1,0 +1,28 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  application:
+    name: StudyNotion
+  data:
+    mongodb:
+      database: StudyNotion
+      auto-index-creation: true
+      uri: mongodb+srv://arjunshekhawat2804:NTqILmvL8usTXUjr@cluster0.lbl62.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: shekhawatsingharjun12345@gmail.com
+    password: ykza vnle uugs cybm
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  cloudinary:
+    cloud_name: dz2sdrjho
+    api_key: 883797428344847
+    api_secret: 4gQwD0lvdSwp__vdSrYii_FzKhE

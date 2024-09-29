@@ -45,4 +45,6 @@ public class User {
 
     private LocalTime resetPasswordExpire;
 
+    private String imageUrl;
+
 }

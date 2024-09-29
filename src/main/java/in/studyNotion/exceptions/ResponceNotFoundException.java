@@ -1,19 +1,23 @@
 package in.studyNotion.exceptions;
 
+import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
+@Getter
 @NoArgsConstructor
 public class ResponceNotFoundException extends RuntimeException{
 
-    private String resourceField;
     private String resourceName;
-    private String message;
+    private String fieldName;
+    private String fieldValue;
 
-    public ResponceNotFoundException(String message,String resourceField,String resourceName){
-
-        super(String.format("%s not found with %s : %s",resourceName,resourceField,message));
-        this.message=message;
-        this.resourceField=resourceField;
-        this.resourceName=resourceName;
+    public  ResponceNotFoundException(String resourceName,String fieldName,String fieldValue){
+        super(String.format("%s Not Found With %s : %s ",resourceName,fieldName,fieldValue));
+        this.resourceName = resourceName;
+        this.fieldValue = fieldValue;
+        this.fieldName = fieldName;
     }
 }

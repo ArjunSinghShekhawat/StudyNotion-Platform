@@ -20,6 +20,10 @@ public class AdminController {
 
     @GetMapping("/get-all-user")
     public ResponseEntity<List<User>>getAllUsers(){
-        return new ResponseEntity<>(this.userRepository.findAll(), HttpStatus.OK);
+        try{
+            return new ResponseEntity<>(this.userRepository.findAll(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

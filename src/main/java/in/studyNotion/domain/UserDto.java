@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
@@ -35,5 +36,11 @@ public class UserDto {
     private String password;
 
     private ProfileDto profileDto;
+
+    private String token;
+
+    private LocalTime resetPasswordExpire;
+
+    private String imageUrl;
 
 }

@@ -1,5 +1,6 @@
 package in.studyNotion.utils;
 
+import in.studyNotion.constants.Constant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -12,10 +13,10 @@ import java.util.Map;
 
 @Component
 public class JwtUtils {
-    private static String SECRET_KEY = "TaK+HaV^uvCHEFsEVfypW#7g9^k*Z8$V";
+
 
     private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        return Keys.hmacShaKeyFor(Constant.SECRET_KEY.getBytes());
     }
 
     public String extractUsername(String token) {
@@ -51,7 +52,7 @@ public class JwtUtils {
                 .header().empty().add("typ","JWT")
                 .and()
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 86400000)) // 5 minutes expiration time
+                .expiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(getSigningKey())
                 .compact();
     }
