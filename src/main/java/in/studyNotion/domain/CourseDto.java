@@ -26,7 +26,7 @@ public class CourseDto {
     private String courseDescription;
 
     @DBRef
-    private ObjectId instructor;
+    private User instructor;
 
     private String whatYouWillLearn;
 
@@ -43,7 +43,7 @@ public class CourseDto {
     private Set<String>tags = new LinkedHashSet<>();
 
     @DBRef
-    private ObjectId category;
+    private Category category;
 
     @DBRef
     private List<User>studentsEnrolled = new LinkedList<>();

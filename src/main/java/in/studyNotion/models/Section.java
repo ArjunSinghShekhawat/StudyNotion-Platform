@@ -1,5 +1,6 @@
 package in.studyNotion.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
@@ -21,5 +22,6 @@ public class Section {
     private String sectionName;
 
     @DBRef
+    @JsonIgnore
     private Set<SubSection>subSections = new LinkedHashSet<>();
 }

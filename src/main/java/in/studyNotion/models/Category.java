@@ -1,5 +1,6 @@
 package in.studyNotion.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Document
@@ -25,5 +27,19 @@ public class Category {
     private String description;
 
     @DBRef
+    @JsonBackReference
     private Set<Course> courses = new LinkedHashSet<>();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name); // Choose unique identifiers
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Category)) return false;
+        Category other = (Category) obj;
+        return Objects.equals(id, other.id);
+    }
 }

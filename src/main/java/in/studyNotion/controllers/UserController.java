@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/user")
 @Slf4j
 public class UserController {
 
@@ -31,7 +31,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
 
     @PutMapping("/profile-update")
     public ResponseEntity<Boolean>updateProfile(@Valid @RequestBody ProfileDto profileDto,@RequestHeader("Authorization") String jwt){

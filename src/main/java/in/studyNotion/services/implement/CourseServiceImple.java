@@ -1,5 +1,6 @@
 package in.studyNotion.services.implement;
 
+import in.studyNotion.constants.Constant;
 import in.studyNotion.domain.CourseDto;
 import in.studyNotion.enums.Status;
 import in.studyNotion.exceptions.ResponceNotFoundException;
@@ -11,10 +12,12 @@ import in.studyNotion.request.CourseRequest;
 import in.studyNotion.services.CourseService;
 import in.studyNotion.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -30,23 +33,17 @@ public class CourseServiceImple implements CourseService {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private CloudinaryDocumentUploadServiceImple cloudinaryDocumentUploadServiceImple;
-
-    @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private SectionRepository sectionRepository;
-
-    @Autowired
-    private SubSectionRepository subSectionRepository;
 
     @Autowired
     private CourseRepository courseRepository;
 
+    @Autowired
+    private EmailSenderService emailSenderService;
+
 
     @Override
-    public Course createCourse(CourseRequest courseRequest, String jwt, MultipartFile file) throws Exception {
+    public Course createCourse(CourseRequest courseRequest, String jwt, ObjectId categoryId,String secureUrl) throws Exception {
 
         try{
             //fetch the user
@@ -58,36 +55,40 @@ public class CourseServiceImple implements CourseService {
                 courseRequest.setStatus(Status.DRAFT);
             }
             //user instructor or not check already
-
-            Optional<Category> category = this.categoryRepository.findById(courseRequest.getCategory());
+            Optional<Category> category = this.categoryRepository.findById(categoryId);
 
             if(!category.isPresent()){
                 throw new ResponceNotFoundException("In Course Controller Category Details Not Found ","category","category Id");
             }
 
-            //upload thumbnail
-            Map  thumbnailData = this.cloudinaryDocumentUploadServiceImple.documentUploader(file,"StudyNotion/thumbnail");
-
             //create course
             Course course = new Course();
 
             course.setCourseName(courseRequest.getCourseName());
-            course.setCourseDescription(course.getCourseDescription());
-            course.setInstructions(courseRequest.getInstructions());
-            course.setWhatYouWillLearn(course.getWhatYouWillLearn());
+            course.setCourseDescription(courseRequest.getCourseDescription());
+            course.getInstructions().addAll(courseRequest.getInstructions());
+            course.setWhatYouWillLearn(courseRequest.getWhatYouWillLearn());
             course.setPrice(courseRequest.getPrice());
-            course.setTags(courseRequest.getTags());
-            course.setCategory(category.get().getId());
-            course.setThumbnail((String)thumbnailData.get("secure_url"));
+            course.getTags().addAll(courseRequest.getTags());
+            course.setCategory(category.get());
             course.setStatus(courseRequest.getStatus());
-            course.setInstructor(existsUser.getId());
+            course.setInstructor(existsUser);
+            course.setCreatedAt(LocalDateTime.now());
+            course.setThumbnail(secureUrl);
+
 
             //course saved
             Course newCourse = this.courseRepository.save(course);
 
+            //add into category
+            category.get().getCourses().add(newCourse);
+            this.categoryRepository.save(category.get());
+
             //update user
             existsUser.getCourses().add(newCourse);
             this.userRepository.save(existsUser);
+
+            this.emailSenderService.sendMail(existsUser.getEmail(),"Course Created Successfully",String.format("%s  Course Created By %s : ",newCourse.getCourseName(),existsUser.getFirstName()));
 
             return newCourse;
         }catch (Exception e){

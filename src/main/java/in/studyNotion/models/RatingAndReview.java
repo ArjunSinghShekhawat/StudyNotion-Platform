@@ -1,5 +1,6 @@
 package in.studyNotion.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
@@ -23,5 +24,6 @@ public class RatingAndReview {
     private byte  rating;
 
     @DBRef
+    @JsonIgnore
     private Course course;
 }

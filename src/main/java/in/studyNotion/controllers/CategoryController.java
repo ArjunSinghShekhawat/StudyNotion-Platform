@@ -3,7 +3,9 @@ package in.studyNotion.controllers;
 import in.studyNotion.domain.CategoryDto;
 import in.studyNotion.models.Category;
 import in.studyNotion.services.CategoryService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("/create")
-    public ResponseEntity<Category>createCategory(@RequestBody CategoryDto categoryDto){
+    public ResponseEntity<Category>createCategory(@Valid @RequestBody CategoryDto categoryDto){
 
         try{
             Category category = this.categoryService.createCategory(categoryDto);
@@ -34,7 +36,7 @@ public class CategoryController {
     }
 
     @GetMapping("/show-all")
-    public ResponseEntity<List<Category>>showAllCategory(@RequestBody CategoryDto categoryDto){
+    public ResponseEntity<List<Category>>showAllCategory(){
 
         try{
             List<Category> categories = this.categoryService.showAllCategories();
@@ -42,6 +44,30 @@ public class CategoryController {
 
         }catch (Exception e){
             log.error("Error occurred while show all categories {} ",e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/update/{categoryId}")
+    public ResponseEntity<Category>updateCategory(@RequestBody CategoryDto categoryDto, @PathVariable ObjectId categoryId){
+
+        try{
+             Category updateCategory = this.categoryService.updateCategory(categoryDto,categoryId);
+            return new ResponseEntity<>(updateCategory, HttpStatus.OK);
+
+        }catch (Exception e){
+            log.error("Error occurred while update category {} ",e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @DeleteMapping("/delete/{categoryId}")
+    public ResponseEntity<Boolean>deleteCategory(@PathVariable ObjectId categoryId){
+
+        try{
+            boolean isDelete =  this.categoryService.deleteCategory(categoryId);
+            return new ResponseEntity<>(isDelete, HttpStatus.OK);
+
+        }catch (Exception e){
+            log.error("Error occurred while delete category {} ",e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

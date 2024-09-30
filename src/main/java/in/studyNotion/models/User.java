@@ -1,5 +1,7 @@
 package in.studyNotion.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import in.studyNotion.enums.AccountTypes;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,5 +52,6 @@ public class User {
     private String imageUrl;
 
     @DBRef
+    @JsonManagedReference
     private Set<Course> courses = new LinkedHashSet<>();
 }

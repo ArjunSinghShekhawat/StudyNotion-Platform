@@ -1,5 +1,7 @@
 package in.studyNotion.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import in.studyNotion.enums.Status;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +26,8 @@ public class Course {
     private String courseDescription;
 
     @DBRef
-    private ObjectId instructor;
+    @JsonBackReference
+    private User instructor;
 
     private String whatYouWillLearn;
 
@@ -32,23 +35,37 @@ public class Course {
     private Set<Section> courseContent = new LinkedHashSet<>();
 
     @DBRef
-    private List<RatingAndReview>ratingAndReviews = new ArrayList<>();
+    private List<RatingAndReview> ratingAndReviews = new ArrayList<>();
 
     private long price;
 
     private String thumbnail;
 
-    private Set<String>tags = new LinkedHashSet<>();
+    private Set<String> tags = new LinkedHashSet<>();
 
     @DBRef
-    private ObjectId category;
+    @JsonManagedReference
+    private Category category;
 
     @DBRef
-    private List<User>studentsEnrolled = new LinkedList<>();
+    private List<User> studentsEnrolled = new LinkedList<>();
 
-    private Set<String>instructions = new LinkedHashSet<>();
+    private Set<String> instructions = new LinkedHashSet<>();
 
     private LocalDateTime createdAt;
 
     private Status status;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); // Only include the unique identifier
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // Check if both references are the same
+        if (!(obj instanceof Course)) return false; // Check if obj is of type Course
+        Course other = (Course) obj;
+        return Objects.equals(id, other.id); // Compare based on the unique identifier
+    }
 }

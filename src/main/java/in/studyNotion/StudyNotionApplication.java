@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 
 @SpringBootApplication
@@ -21,6 +23,10 @@ public class StudyNotionApplication {
 	@Bean
 	public ModelMapper modelMapper(){
 		return new ModelMapper();
+	}
+	@Bean
+	public MultipartResolver multipartResolver() {
+		return new StandardServletMultipartResolver();
 	}
 
 	@Bean
