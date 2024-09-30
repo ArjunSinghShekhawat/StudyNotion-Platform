@@ -2,7 +2,9 @@ package in.studyNotion.controllers;
 
 import in.studyNotion.constants.Constant;
 import in.studyNotion.enums.AccountTypes;
+import in.studyNotion.models.Course;
 import in.studyNotion.models.User;
+import in.studyNotion.repositories.CourseRepository;
 import in.studyNotion.repositories.UserRepository;
 import in.studyNotion.services.implement.CloudinaryDocumentUploadServiceImple;
 import in.studyNotion.utils.JwtUtils;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -29,6 +32,9 @@ public class DocumentUploadOnCloudinary {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
 
     @PutMapping("/photo")
@@ -68,11 +74,13 @@ public class DocumentUploadOnCloudinary {
 
            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
 
-       }catch (Exception e){
-           log.error("Error occurred while upload file {} ",e.getMessage());
+       }catch (Exception e) {
+           log.error("Error occurred while upload file {} ", e.getMessage());
            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
        }
     }
+
+
 
 
 }
