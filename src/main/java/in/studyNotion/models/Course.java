@@ -37,7 +37,7 @@ public class Course {
     @DBRef
     private List<RatingAndReview> ratingAndReviews = new ArrayList<>();
 
-    private long price;
+    private Long price;
 
     private String thumbnail;
 

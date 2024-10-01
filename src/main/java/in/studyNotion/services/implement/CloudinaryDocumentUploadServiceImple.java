@@ -46,6 +46,33 @@ public class CloudinaryDocumentUploadServiceImple {
             options.put("resource_type", "auto");
             options.put("public_id", fileName);
 
+            String originalFileName = file.getOriginalFilename();
+
+
+            if (originalFileName != null && !originalFileName.isEmpty()) {
+                log.info("Original file name: " + originalFileName);
+            } else {
+                throw new Exception ("File name is invalid or file is empty!");
+            }
+
+            //check file type
+            if (originalFileName.endsWith(".jpg") || originalFileName.endsWith(".png") || originalFileName.endsWith(".pdf")) {
+
+                 options.put("format","jpg");
+                 options.put("width","800");
+                 options.put("height","600");
+
+            } else if (originalFileName.endsWith(".mp4") || originalFileName.endsWith(".avi") || originalFileName.endsWith(".mov")) {
+
+                options.put("format","mp4");
+                options.put("width","1280");
+                options.put("height","720");
+
+            } else {
+                throw new IllegalArgumentException("Unsupported file type. Please upload an image or video.");
+            }
+
+
             log.info("All options are {}", options);
 
             // Upload document to cloudinary

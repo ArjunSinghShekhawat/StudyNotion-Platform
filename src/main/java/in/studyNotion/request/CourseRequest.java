@@ -16,7 +16,7 @@ public class CourseRequest {
 
     private String whatYouWillLearn;
 
-    private long price;
+    private Long price;
 
     private Set<String>tags = new LinkedHashSet<>();
 

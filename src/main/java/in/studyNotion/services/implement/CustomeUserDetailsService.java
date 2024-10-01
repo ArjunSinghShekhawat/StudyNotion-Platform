@@ -28,6 +28,8 @@ public class CustomeUserDetailsService implements UserDetailsService {
                     .roles(String.valueOf(user.getAccountTypes()))
                     .build();
         }
+        System.out.println("load user "+user);
+
         log.error("Error Occurred while load the user from the database but not found");
         throw new UsernameNotFoundException("User Not Found");
     }

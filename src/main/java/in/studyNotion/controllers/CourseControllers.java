@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -53,11 +54,11 @@ public class CourseControllers {
     public ResponseEntity<Course>uploadThumbnail(
                                                @PathVariable ObjectId categoryId,
                                                @RequestHeader("Authorization") String jwt,
-                                               @RequestPart("courseRequest") CourseRequest courseRequest){
+                                               @RequestBody CourseRequest courseRequest){
 
         try{
-            String secureUrl="arjun.png";
-            Course course = this.courseService.createCourse(courseRequest, jwt,categoryId,secureUrl);
+
+            Course course = this.courseService.createCourse(courseRequest, jwt,categoryId);
             return new ResponseEntity<>(course, HttpStatus.CREATED);
 
         }catch (Exception e){
@@ -94,5 +95,55 @@ public class CourseControllers {
             log.error("Error occurred while upload thumbnail {} ", e.getMessage());
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("/update/{courseId}")
+    public ResponseEntity<Boolean>updateCourse(@RequestBody CourseRequest courseRequest,@PathVariable ObjectId courseId,@RequestHeader("Authorization") String jwt){
+        try{
+            boolean isUpdate = this.courseService.courseUpdate(courseRequest, jwt, courseId);
+
+            if(isUpdate){
+                return new ResponseEntity<>(isUpdate,HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(isUpdate,HttpStatus.BAD_GATEWAY);
+            }
+
+        }catch (Exception e){
+            log.error("Error occur while update course {} ",e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @DeleteMapping("/delete/{courseId}")
+    public ResponseEntity<Boolean>deleteCourse(@PathVariable ObjectId courseId,@RequestHeader("Authorization") String jwt){
+        try{
+            boolean isRemove = this.courseService.deleteCourse(courseId,jwt);
+
+            if(isRemove){
+                return new ResponseEntity<>(isRemove,HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(isRemove,HttpStatus.BAD_GATEWAY);
+            }
+
+        }catch (Exception e){
+            log.error("Error occur while remove course {} ",e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/get-instructor-courses")
+    public ResponseEntity<Set<Course>>getInstructorCourses(@RequestHeader("Authorization") String jwt){
+        try{
+            Set<Course> allInstructorCourse = this.courseService.getAllInstructorCourse(jwt);
+
+            if(allInstructorCourse!=null){
+                return new ResponseEntity<>(allInstructorCourse,HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }catch (Exception e){
+            log.error("Error occur while get all instructor courses {} ",e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
