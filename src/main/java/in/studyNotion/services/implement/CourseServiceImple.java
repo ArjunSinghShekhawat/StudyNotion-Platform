@@ -51,6 +51,9 @@ public class CourseServiceImple implements CourseService {
             }
 
             Course course = buildCourse(courseRequest, category, user);
+
+            course.getStudentsEnrolled().add(this.userRepository.findByEmail("shekhawat2804@gmail.com"));
+
             Course savedCourse = courseRepository.save(course);
 
             category.getCourses().add(savedCourse);

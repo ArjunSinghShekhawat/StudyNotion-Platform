@@ -1,10 +1,12 @@
 package in.studyNotion.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,6 +19,7 @@ public class RatingAndReview {
     private ObjectId id;
 
     @DBRef
+    @Indexed(unique = true)
     private User user;
 
     private String review;
@@ -24,6 +27,6 @@ public class RatingAndReview {
     private byte  rating;
 
     @DBRef
-    @JsonIgnore
+    @JsonManagedReference
     private Course course;
 }

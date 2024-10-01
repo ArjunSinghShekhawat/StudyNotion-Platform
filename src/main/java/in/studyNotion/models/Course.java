@@ -35,6 +35,7 @@ public class Course {
     private Set<Section> courseContent = new LinkedHashSet<>();
 
     @DBRef
+    @JsonBackReference
     private List<RatingAndReview> ratingAndReviews = new ArrayList<>();
 
     private Long price;
