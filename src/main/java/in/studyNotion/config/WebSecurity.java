@@ -33,7 +33,6 @@ public class WebSecurity {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         try{
-            System.out.println("Security "+"success");
             return httpSecurity.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(auth->
@@ -44,7 +43,6 @@ public class WebSecurity {
                                     .anyRequest().authenticated())
                     .addFilterBefore(jwtValidation,UsernamePasswordAuthenticationFilter.class)
                     .build();
-
 
         }catch(Exception e) {
             log.error("Exception occurred while check web security {} ", e.getMessage());

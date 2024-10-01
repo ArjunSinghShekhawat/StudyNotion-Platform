@@ -83,6 +83,7 @@ public class SectionServiceImple implements SectionService {
                 {
                     throw new Exception("In Course Content Section is not found");
                 }
+                this.courseRepository.save(course);
                 this.sectionRepository.deleteById(sectionId);
                 isDelete=true;
             }

@@ -10,5 +10,7 @@ public class Constant {
     public static final String INSTRUCTOR_FOLDER= "StudyNotion/Instructor";
     public static final String ADMIN_FOLDER = "StudyNotion/Admin";
     public static final String COURSE_FOLDER = "StudyNotion/Thumbnail";
+    public static final String VIDEO_FOLDER = "StudyNotion/Videos";
+
 
 }

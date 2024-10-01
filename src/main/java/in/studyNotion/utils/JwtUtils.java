@@ -20,7 +20,6 @@ public class JwtUtils {
     }
 
     public String extractUsername(String token) {
-        System.out.println("extract user name "+token);
         Claims claims = extractAllClaims(token);
         return claims.getSubject();
     }
