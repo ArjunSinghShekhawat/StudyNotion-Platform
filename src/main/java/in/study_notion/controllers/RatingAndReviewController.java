@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class RatingAndReviewController {
 
+
+    private final RatingAndReviewService ratingAndReviewService;
+
     @Autowired
-    private RatingAndReviewService ratingAndReviewService;
+    public RatingAndReviewController(RatingAndReviewService ratingAndReviewService){
+        this.ratingAndReviewService=ratingAndReviewService;
+    }
 
     @PostMapping("/create")
     public ResponseEntity<RatingAndReview>createRatingAndReview(@RequestBody RatingAndReviewRequest ratingAndReviewRequest,@RequestHeader("Authorization") String jwt){
@@ -27,7 +32,7 @@ public class RatingAndReviewController {
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
-            log.error("Error occured while create rating and review {} ",e.getMessage());
+            log.error("Error occurred while create rating and review {} ",e.getMessage());
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

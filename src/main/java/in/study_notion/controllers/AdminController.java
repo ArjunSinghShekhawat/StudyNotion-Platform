@@ -17,9 +17,13 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
+
+    @Autowired
+    public AdminController(UserRepository userRepository){
+        this.userRepository=userRepository;
+    }
     @GetMapping("/get-all-user")
     public ResponseEntity<List<User>>getAllUsers(){
         try{

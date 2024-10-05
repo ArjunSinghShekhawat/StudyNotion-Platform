@@ -1,7 +1,6 @@
 package in.study_notion.domain;
 
 import in.study_notion.enums.Gender;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;

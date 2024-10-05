@@ -10,5 +10,5 @@ public interface CourseService {
     Course createCourse(CourseRequest courseRequest, String jwt, ObjectId categoryId) throws Exception;
     boolean courseUpdate(CourseRequest courseRequest,String jwt,ObjectId courseId);
     boolean deleteCourse(ObjectId courseId,String jwt);
-    public Set<Course> getAllInstructorCourse(String jwt);
+    Set<Course> getAllInstructorCourse(String jwt);
 }

@@ -18,10 +18,12 @@ import java.util.concurrent.TimeUnit;
 public class ContactUsService {
 
     private final ContactUsRepository contactUsRepository;
+    private final EmailSenderService emailSenderService;
 
     @Autowired
-    public ContactUsService(ContactUsRepository contactUsRepository) {
+    public ContactUsService(ContactUsRepository contactUsRepository,EmailSenderService emailSenderService) {
         this.contactUsRepository = contactUsRepository;
+        this.emailSenderService=emailSenderService;
     }
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -46,6 +48,8 @@ public class ContactUsService {
 
             ContactUs saveContactUs = this.contactUsRepository.save(newContactUs);
             isSaved=true;
+
+            scheduler.submit(()->this.emailSenderService.sendMail(contactUs.getEmail(),"Query","Your Query Successful submit !"));
 
             scheduleDelete(saveContactUs.getId());
         }catch (Exception e){

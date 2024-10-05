@@ -78,14 +78,10 @@ public class DocumentUploadOnCloudinary {
 
            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
 
-       }catch (GeneralExceptionHandler e) {
+       }catch (Exception e) {
            log.error("Error occurred while upload file {} ", e.getMessage());
            Thread.currentThread().interrupt();
            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-       } catch (CloudinaryUploadException e) {
-           throw new RuntimeException(e);
-       } catch (IOException e) {
-           throw new RuntimeException(e);
        }
     }
 }

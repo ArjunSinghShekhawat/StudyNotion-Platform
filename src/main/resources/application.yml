@@ -26,3 +26,6 @@ spring:
     cloud_name: dz2sdrjho
     api_key: 883797428344847
     api_secret: 4gQwD0lvdSwp__vdSrYii_FzKhE
+
+net:
+  bindIp: 0.0.0.0

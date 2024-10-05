@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ContactUsControllers {
 
+    private final ContactUsService contactUsService;
+
     @Autowired
-    private ContactUsService contactUsService;
+    public ContactUsControllers(ContactUsService contactUsService){
+        this.contactUsService=contactUsService;
+    }
 
     @PostMapping("/query")
     public ResponseEntity<Boolean> contactUs(@RequestBody ContactUs contactUs){
@@ -25,14 +29,13 @@ public class ContactUsControllers {
             boolean query = this.contactUsService.contactUs(contactUs);
 
             if(query){
-                return new ResponseEntity<>(query,HttpStatus.OK);
+                return new ResponseEntity<>(true,HttpStatus.OK);
             }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(false,HttpStatus.NOT_FOUND);
         }catch (Exception e){
             log.error("Error occurred while create new contact us query {} ",e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
     }
-
 
 }

@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -25,6 +28,7 @@ public class ResetPasswordServiceImpl {
         this.emailSenderService = emailSenderService;
     }
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private static final ExecutorService executer = Executors.newScheduledThreadPool(2);
 
 
     @Transactional
@@ -50,7 +54,7 @@ public class ResetPasswordServiceImpl {
            String url = "http://localhost:3000/update-password/"+token;
            String message = String.format("Your Link for email verification is %s Please click this url to reset your password.",url);
 
-           isSend = this.emailSenderService.sendMail(email, "Reset Password", message);
+           executer.submit(()->this.emailSenderService.sendMail(email, "Reset Password", message));
 
        }catch (NoSuchFieldException e){
            log.error("Error occurred while create reset password token {} ",e.getMessage());
@@ -79,8 +83,20 @@ public class ResetPasswordServiceImpl {
 
         String message = String.format("Your updated password is %s -----> ",confirmPassword);
 
-        this.emailSenderService.sendMail(existsUser.getEmail(), "Reset Password Successfully ",message);
+        executer.submit(()->this.emailSenderService.sendMail(existsUser.getEmail(), "Reset Password Successfully ",message));
+        shutdownScheduler();
 
         return "Reset Password Successfully !";
+    }
+    private void shutdownScheduler() {
+        executer.shutdown();
+        try {
+            if (!executer.awaitTermination(60, TimeUnit.SECONDS)) {
+                executer.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executer.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 }

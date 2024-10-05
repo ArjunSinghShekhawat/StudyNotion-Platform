@@ -54,4 +54,5 @@ public class ResetPasswordController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 }
