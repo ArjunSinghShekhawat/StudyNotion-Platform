@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 @Slf4j
 @Configuration
@@ -28,5 +30,9 @@ public class CloudinaryConfiguration {
         log.info("Cloudinary configuration successfully !");
 
         return new Cloudinary(config);
+    }
+    @Bean
+    public ScheduledExecutorService scheduledExecutorService() {
+        return Executors.newScheduledThreadPool(10);
     }
 }

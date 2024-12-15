@@ -109,17 +109,19 @@ public class Auth {
             // Save user
             User savedUser = this.authDependencies.getUserRepository().save(newUser);
 
+            String jwt = this.authDependencies.getJwtUtils().generateToken(savedUser.getEmail());
+
             log.info("user sign up successful");
 
             //send response
             AuthResponce response = new AuthResponce();
             response.setStatus(true);
             response.setMessage(String.format("%s you have successfully signed up on the best education platform Study Notion", savedUser.getFirstName()));
-            response.setJwt(null);
+            response.setJwt(jwt);
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         }catch (Exception e){
-            log.error("Error Occurred while signup a new user !");
+            log.error("Error Occurred while signup a new user {} ",e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

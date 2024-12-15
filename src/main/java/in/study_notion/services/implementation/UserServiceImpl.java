@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,12 +37,12 @@ public class UserServiceImpl implements UserService {
 
            user.setFirstName(userRequest.getFirstName()!=null && !userRequest.getFirstName().isEmpty() ?userRequest.getFirstName():user.getFirstName());
            user.setLastName(userRequest.getLastName()!=null && !userRequest.getLastName().isEmpty() ?userRequest.getLastName():user.getLastName());
-
+           user.setUpdatedAt(LocalDateTime.now());
            return this.userRepository.save(user);
     }
 
     @Override
-    public User getUserAllInformationByEmail(String jwt){
+    public User getUserAllInformationByJwt(String jwt){
         /*
         This method is used for get all information about the user
          */

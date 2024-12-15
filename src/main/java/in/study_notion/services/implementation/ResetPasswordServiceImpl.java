@@ -55,6 +55,7 @@ public class ResetPasswordServiceImpl {
            String message = String.format("Your Link for email verification is %s Please click this url to reset your password.",url);
 
            executer.submit(()->this.emailSenderService.sendMail(email, "Reset Password", message));
+           isSend=true;
 
        }catch (NoSuchFieldException e){
            log.error("Error occurred while create reset password token {} ",e.getMessage());

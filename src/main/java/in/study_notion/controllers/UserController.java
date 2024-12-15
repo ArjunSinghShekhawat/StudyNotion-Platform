@@ -86,7 +86,7 @@ public class UserController {
     public ResponseEntity<User>getUserInformation(@RequestHeader("Authorization") String jwt){
 
        try{
-           User userInformation = this.userService.getUserAllInformationByEmail(jwt);
+           User userInformation = this.userService.getUserAllInformationByJwt(jwt);
            if(userInformation!=null){
                return new ResponseEntity<>(userInformation,HttpStatus.OK);
            }

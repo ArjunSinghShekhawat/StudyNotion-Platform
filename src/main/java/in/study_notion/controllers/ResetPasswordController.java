@@ -29,7 +29,7 @@ public class ResetPasswordController {
     public ResponseEntity<Boolean> resetPasswordTokenSend(@RequestBody ResetPasswordRequest resetPasswordRequest){
         try{
             boolean sendToken = this.resetPasswordServiceImple.resetPasswordTokenGenerate(resetPasswordRequest.getEmail());
-
+            System.out.println(sendToken);
             if(sendToken){
                 return new ResponseEntity<>(true, HttpStatus.OK);
             }

@@ -49,11 +49,12 @@ public class SectionServiceImpl implements SectionService {
                 course.getCourseContent().add(saveSection);
 
                 this.courseRepository.save(course);
+                return saveSection;
             }
         }catch (Exception e){
             log.error("Error occurred while create a new section {} ",e.getMessage());
         }
-        return saveSection;
+        throw new Exception("Course not found ");
     }
 
     @Override

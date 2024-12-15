@@ -25,4 +25,9 @@ public class Constant {
     public static final int VIDEO_HEIGHT = 720;
 
 
+    public static final String RAZORPAY_API_KEY = "rzp_test_t4LUM04KXw6wHc";
+    public static final String RAZORPAY_API_SECRET="DOdtPrjZRxQejIdj1vAzm0MY";
+
+
+
 }

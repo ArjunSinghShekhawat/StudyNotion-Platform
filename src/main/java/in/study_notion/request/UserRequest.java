@@ -14,6 +14,4 @@ public class UserRequest {
 
     private String lastName;
 
-    private LocalDateTime updatedAt;
-
 }
